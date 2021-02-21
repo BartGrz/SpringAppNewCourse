@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -35,6 +37,17 @@ public class TaskController {
         logger.info("custom pageable");
         return ResponseEntity.ok(repository.findAll(pageable).getContent());
     }
+    @GetMapping("/tasks/{id}" )
+    ResponseEntity<Task> readTask (@PathVariable int id , @RequestBody @Valid Task findById) {
+
+         if(!repository.existsById(id)) {
+             return ResponseEntity.notFound().build();
+         }
+
+        return repository.findById(id).map(task -> ResponseEntity.ok(task))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 
     @PutMapping("/tasks/{id}")
     ResponseEntity<?> updateTask( @PathVariable int id , @RequestBody @Valid Task toUpdate) {
@@ -46,5 +59,25 @@ public class TaskController {
          repository.save(toUpdate);
          return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/tasks")
+    ResponseEntity<Task> createTask ( @RequestBody @Valid Task toCreate) {
+
+         Task result = repository.save(toCreate);
+         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
+    }
+    @DeleteMapping("/tasks/{id}")
+    ResponseEntity<?> deleteTask (@PathVariable int id, @RequestBody @Valid Task toDelete) {
+
+        if(!repository.existsById(id)) {
+            logger.warn("Task id=" +id + " notFound");
+            return ResponseEntity.notFound().build();
+        }
+         toDelete.setId(id);
+         repository.deleteInBatch(Collections.singleton(toDelete));
+         logger.warn("Task id=" +id + " deleted");
+         return ResponseEntity.noContent().build();
+    }
+
 
 }

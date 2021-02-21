@@ -15,6 +15,8 @@ public interface TaskRepository {
 
     Optional<Task> findById(Integer id );
 
+    void deleteInBatch(Iterable<Task> var1);
+
    boolean existsById (Integer id);
 
     Task save (Task entity);
