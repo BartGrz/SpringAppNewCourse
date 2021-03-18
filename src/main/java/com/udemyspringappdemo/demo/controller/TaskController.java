@@ -27,6 +27,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/tasks",params ={"!sort","!page","!size"} )
+
     ResponseEntity<List<Task>> readAllTasks() {
          logger.warn("Exposing all the tasks!");
          return ResponseEntity.ok(repository.findAll());
@@ -36,6 +37,7 @@ public class TaskController {
 
         logger.info("custom pageable");
         return ResponseEntity.ok(repository.findAll(pageable).getContent());
+
     }
     @GetMapping("/tasks/{id}" )
     ResponseEntity<Task> readTask (@PathVariable int id , @RequestBody @Valid Task findById) {
@@ -66,6 +68,7 @@ public class TaskController {
          Task result = repository.save(toCreate);
          return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
+
     @DeleteMapping("/tasks/{id}")
     ResponseEntity<?> deleteTask (@PathVariable int id, @RequestBody @Valid Task toDelete) {
 

@@ -21,7 +21,7 @@ public interface TaskRepository {
 
     Task save (Task entity);
 
-    List<Task> findByDone(@Param("state") boolean done); //ustawienie zapytania o kolumne done, ustawienie parametru za pomoca ktoreego ustala sie zapytanie
+  //  List<Task> findByDone(@Param("state") boolean done); //ustawienie zapytania o kolumne done, ustawienie parametru za pomoca ktoreego ustala sie zapytanie
     // np localhost:8080/tasks/search/done?state=false
 
 }
