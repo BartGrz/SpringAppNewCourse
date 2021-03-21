@@ -17,13 +17,10 @@ public class TaskGroup {
     @NotBlank(message = "Task group's description must be not null")
     private String description;
     private boolean done;
-    @Column(name = "deadline")
-    private LocalDateTime deadline;
 
-    @Embedded
-    private Audit audit = new Audit();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "group")
+
+    @OneToMany( cascade = CascadeType.ALL,mappedBy = "group") //domyslnie dla kolekcji ustawiony jest fetch = FetchType.LAZY,
     private Set<Task> tasks ;
 
 
@@ -51,7 +48,7 @@ public class TaskGroup {
         return id;
     }
 
-     Set<Task> getTasks() {
+     public Set<Task> getTasks() {
         return tasks;
     }
 

@@ -19,6 +19,8 @@ public interface TaskRepository {
 
    boolean existsById (Integer id);
 
+    boolean existsByDoneIsFalseAnAndGroup_Id(Integer groupId);
+
     Task save (Task entity);
 
   //  List<Task> findByDone(@Param("state") boolean done); //ustawienie zapytania o kolumne done, ustawienie parametru za pomoca ktoreego ustala sie zapytanie
