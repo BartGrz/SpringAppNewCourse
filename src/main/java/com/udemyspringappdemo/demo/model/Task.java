@@ -1,5 +1,7 @@
 package com.udemyspringappdemo.demo.model;
 
+import org.hibernate.annotations.ManyToAny;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -19,6 +21,9 @@ public class Task  {
 
     @Embedded
     private Audit audit = new Audit();
+    @ManyToOne
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
 
     public Task() {
     }
@@ -43,6 +48,14 @@ public class Task  {
         return id;
     }
 
+     TaskGroup getGroup() {
+        return group;
+    }
+
+     void setGroup(TaskGroup group) {
+        this.group = group;
+    }
+
     public LocalDateTime getDeadline() {
         return deadline;
     }
@@ -54,6 +67,7 @@ public class Task  {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
+        group=source.group;
     }
 
     public void deleteFrom(final Task source) {
@@ -61,6 +75,7 @@ public class Task  {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
+        group=source.group;
     }
 
 
