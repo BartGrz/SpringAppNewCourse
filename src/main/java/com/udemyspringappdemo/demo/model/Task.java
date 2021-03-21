@@ -2,10 +2,11 @@ package com.udemyspringappdemo.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-public class Task {
+public class Task extends BaseAuditableEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +14,10 @@ public class Task {
     @NotBlank(message = "task's description must be not null")
     private String description;
     private boolean done;
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
+
+
 
     public Task() {
     }
@@ -33,12 +38,30 @@ public class Task {
         this.done = done;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
     public int getId() {
         return id;
     }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    public void updatefrom(final Task source) {
+        description = source.description;
+        done = source.done;
+        deadline = source.deadline;
+    }
+
+    public void deleteFrom(final Task source) {
+
+        description = source.description;
+        done = source.done;
+        deadline = source.deadline;
+    }
+
+
+
 }

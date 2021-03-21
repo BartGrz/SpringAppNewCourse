@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
@@ -57,8 +58,10 @@ public class TaskController {
          if(!repository.existsById(id)) {
              return ResponseEntity.notFound().build();
          }
-         toUpdate.setId(id);
-         repository.save(toUpdate);
+         repository.findById(id).ifPresent(task -> {
+             task.updatefrom(toUpdate);
+             repository.save(task);
+         });
          return ResponseEntity.noContent().build();
     }
 
@@ -73,14 +76,24 @@ public class TaskController {
     ResponseEntity<?> deleteTask (@PathVariable int id, @RequestBody @Valid Task toDelete) {
 
         if(!repository.existsById(id)) {
-            logger.warn("Task id=" +id + " notFound");
+
             return ResponseEntity.notFound().build();
         }
-         toDelete.setId(id);
+       //  toDelete.setId(id);
+        repository.findById(id).ifPresent(task -> task.deleteFrom(toDelete));
          repository.deleteInBatch(Collections.singleton(toDelete));
-         logger.warn("Task id=" +id + " deleted");
+
          return ResponseEntity.noContent().build();
     }
+    @Transactional
+    @PatchMapping("/task/{id}")
+    public ResponseEntity<?> toogleTask (@PathVariable int id ) {
 
+    if(!repository.existsById(id)) {
+        return ResponseEntity.notFound().build();
+    }
+    repository.findById(id).ifPresent(task -> task.setDone(!task.isDone()));
+    return ResponseEntity.noContent().build();
+}
 
 }
