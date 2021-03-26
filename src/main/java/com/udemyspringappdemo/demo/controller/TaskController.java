@@ -41,11 +41,7 @@ public class TaskController {
 
     }
     @GetMapping("/tasks/{id}" )
-    ResponseEntity<Task> readTask (@PathVariable int id , @RequestBody @Valid Task findById) {
-
-         if(!repository.existsById(id)) {
-             return ResponseEntity.notFound().build();
-         }
+    ResponseEntity<Task> readTask (@PathVariable int id ) {
 
         return repository.findById(id).map(task -> ResponseEntity.ok(task))
                 .orElse(ResponseEntity.notFound().build());

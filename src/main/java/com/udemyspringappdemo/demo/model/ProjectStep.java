@@ -14,6 +14,7 @@ public class ProjectStep {
     @NotBlank(message = "Project step's description must not be empty")
     private String description;
    // private int project_id;
+
     private int days_to_deadline;
 
     @ManyToOne
@@ -42,12 +43,12 @@ public class ProjectStep {
 
 
 
-    public int getDays_to_deadline() {
+    public int getDaysToDeadLine() {
         return days_to_deadline;
     }
 
-    public void setDays_to_deadline(int days_to_deadline) {
-        this.days_to_deadline = days_to_deadline;
+    public void setDaysToDeadLine(int days_to_deadLine) {
+        this.days_to_deadline = days_to_deadLine;
     }
 
      Project getProject() {
