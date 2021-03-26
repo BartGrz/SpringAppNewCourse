@@ -28,6 +28,11 @@ public class Task  {
     public Task() {
     }
 
+    public Task(String description, LocalDateTime deadline) {
+        this.description = description;
+        this.deadline = deadline;
+    }
+
     public String getDescription() {
         return description;
     }

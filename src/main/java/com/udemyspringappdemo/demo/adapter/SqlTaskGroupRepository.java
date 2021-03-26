@@ -1,5 +1,6 @@
 package com.udemyspringappdemo.demo.adapter;
 
+import com.udemyspringappdemo.demo.model.Project;
 import com.udemyspringappdemo.demo.model.TaskGroup;
 import com.udemyspringappdemo.demo.model.TaskGroupRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,12 @@ import java.util.List;
 public interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup, Integer> {
 
     @Override
-    @Query("from TaskGroup g join fetch g.tasks")
+    @Query("select distinct g from TaskGroup g join fetch g.tasks")
     List<TaskGroup> findAll();
+
+    @Query("from TaskGroup g join fetch g.tasks where g.done = false ")
+    List<Project> findAllByDoneIsFalse();
+
+    @Override
+    boolean existsByDoneIsFalseAndProject_Id(Integer projectId);
 }
