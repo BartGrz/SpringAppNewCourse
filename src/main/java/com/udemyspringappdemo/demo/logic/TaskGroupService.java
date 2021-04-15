@@ -27,16 +27,13 @@ public class TaskGroupService {
 
     public GroupReadModel createGroup(GroupWriteModel source) {
         TaskGroup result = repository.save(source.toGroup());
-
         return new GroupReadModel(result);
     }
     public List<GroupReadModel> readAll() {
-
         return repository.findAll()
                 .stream()
                 .map(GroupReadModel::new)
                 .collect(Collectors.toList());
-
     }
 
     public void toogleGroup(int groupId) {
@@ -45,6 +42,7 @@ public class TaskGroupService {
         }
        TaskGroup result =  repository.findById(groupId).orElseThrow(()-> new IllegalArgumentException("TaskGroup with gven id not found"));
        result.setDone(!result.isDone());
+       repository.save(result);
     }
 
 }

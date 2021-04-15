@@ -16,6 +16,6 @@ public interface TaskGroupRepository {
 
     TaskGroup save (TaskGroup entity);
 
-    List<Project> findAllByDoneIsFalse();
+    //List<Project> findAllByDoneIsFalse();
 
 }
