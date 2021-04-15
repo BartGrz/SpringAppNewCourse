@@ -51,10 +51,10 @@ public class ProjectService {
                             project.getDescription(), deadLine.plusDays(projectStep.getDaysToDeadLine())))
                     .collect(Collectors.toSet()));
 
+            targetGroup.setProject(project);
+            return taskGroupRepository.save(targetGroup);
 
-            return targetGroup;
-
-        }).orElseThrow(()->new IllegalStateException("Project with given id not found"));
+        }).orElseThrow(()->new IllegalArgumentException("Project with given id not found"));
         return new GroupReadModel(result);
     }
 }
