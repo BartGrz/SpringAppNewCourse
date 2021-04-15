@@ -23,14 +23,15 @@ class ProjectServiceTest {
         var mockGroupRepository = mock(TaskGroupRepository.class);
         when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(true);
         //and
-        var mockTemoplate =mock(TaskConfigurationProperties.Template.class);
-        when(mockTemoplate.isAllowMultipleTasks()).thenReturn(false);
+        var mockTemplate =mock(TaskConfigurationProperties.Template.class);
+        when(mockTemplate.isAllowMultipleTasks()).thenReturn(false);
         //and
         var mockConfig = mock(TaskConfigurationProperties.class);
-        when(mockConfig.getTemplate()).thenReturn(mockTemoplate);
+        when(mockConfig.getTemplate()).thenReturn(mockTemplate);
         //system under test
         var toTest = new ProjectService(null,mockGroupRepository,mockConfig);
         //when
+        toTest.createGroup(0, LocalDateTime.now());
         var exception = catchThrowable(()->toTest.createGroup(0,LocalDateTime.now()));
         //then
 
