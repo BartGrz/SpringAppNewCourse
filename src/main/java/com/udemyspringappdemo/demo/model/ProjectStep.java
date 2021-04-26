@@ -2,7 +2,6 @@ package com.udemyspringappdemo.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "project_steps")
@@ -51,7 +50,7 @@ public class ProjectStep {
         this.days_to_deadline = days_to_deadLine;
     }
 
-     Project getProject() {
+     public Project getProject() {
         return project;
     }
 

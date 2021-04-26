@@ -2,7 +2,6 @@ package com.udemyspringappdemo.demo.model.projection;
 
 import com.udemyspringappdemo.demo.model.Task;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class GroupTaskWriteModel {

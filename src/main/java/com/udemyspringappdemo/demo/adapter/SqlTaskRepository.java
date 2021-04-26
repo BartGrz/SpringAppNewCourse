@@ -10,15 +10,17 @@ import org.springframework.stereotype.Repository;
     @Repository
     interface SqlTaskRepository extends TaskRepository,JpaRepository<Task,Integer>  {
 
-        /*
+
         @Override
         @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
-        boolean existsById(@Param(("id")) Integer id);
-
+        boolean existsById(@Param("id") Integer id);
+/*
         @Override
         boolean existsByDoneIsFalseAnAndGroup_Id(Integer groupId);
 
-         */
+
+ */
+
     }
 
 

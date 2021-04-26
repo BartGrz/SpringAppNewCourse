@@ -1,11 +1,12 @@
 package com.udemyspringappdemo.demo.model;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
 
+@Component
 public interface TaskGroupRepository {
 
     List<TaskGroup> findAll();
@@ -16,6 +17,6 @@ public interface TaskGroupRepository {
 
     TaskGroup save (TaskGroup entity);
 
-    //List<Project> findAllByDoneIsFalse();
+    List<Project> findAllByDoneIsFalse();
 
 }

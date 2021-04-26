@@ -2,8 +2,6 @@ package com.udemyspringappdemo.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 
@@ -47,7 +45,7 @@ public class TaskGroup {
         return id;
     }
 
-     public Set<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
@@ -55,13 +53,12 @@ public class TaskGroup {
         this.tasks = tasks;
     }
 
-    public Project getProject() {
+   public Project getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+   public void setProject(Project project) {
         this.project = project;
     }
 }
-
 

@@ -1,18 +1,16 @@
 package com.udemyspringappdemo.demo.logic;
 
-import com.udemyspringappdemo.demo.model.*;
+import com.udemyspringappdemo.demo.model.TaskGroup;
+import com.udemyspringappdemo.demo.model.TaskGroupRepository;
+import com.udemyspringappdemo.demo.model.TaskRepository;
 import com.udemyspringappdemo.demo.model.projection.GroupReadModel;
 import com.udemyspringappdemo.demo.model.projection.GroupWriteModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @RequestScope
 public class TaskGroupService {
 

@@ -21,8 +21,8 @@ public class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
    private final TaskRepository repository;
 
-
-     TaskController(final TaskRepository repository) {
+    //mozna tak @Qualifier("sqlTaskRepository"), rozwiazanie konfliktu z duplikatem beanu w testach
+     TaskController( final TaskRepository repository) {
         this.repository = repository;
     }
 

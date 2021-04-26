@@ -183,6 +183,11 @@ class ProjectServiceTest {
             map.put(entity.getId(), entity);
             return entity;
         }
+
+        @Override
+        public List<Project> findAllByDoneIsFalse() {
+            return null;
+        }
     }
 
 }
