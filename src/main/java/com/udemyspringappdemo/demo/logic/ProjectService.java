@@ -2,15 +2,12 @@ package com.udemyspringappdemo.demo.logic;
 
 import com.udemyspringappdemo.demo.model.*;
 import com.udemyspringappdemo.demo.model.projection.GroupReadModel;
-import com.udemyspringappdemo.demo.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class ProjectService {
 
     private ProjectRepository repository;
