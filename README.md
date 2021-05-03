@@ -2,15 +2,20 @@
 
 ## Course is focused on servlet aspect of spirng framework. Application is not finished yet.
 
-  ### Technologies used during the course :
-  #### Backend
+  ### Language : 
+   * #### Java 11
+  ### Frameworks :
   * #### Spring 5
   * #### Spring Boot 2
   * #### Hibernate
+  ### Database :
+   * #### H2 
+  ### Tools :
   * #### JUnit
   * #### Mockito
   * #### Maven
   * #### AssertJ
-  #### Frontend
+  * #### Flyway
+  #### Template engine
   * #### Thymeleaf
   
