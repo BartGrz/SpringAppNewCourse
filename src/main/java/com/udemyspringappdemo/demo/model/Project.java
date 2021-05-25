@@ -1,5 +1,8 @@
 package com.udemyspringappdemo.demo.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
@@ -9,50 +12,20 @@ import java.util.Set;
 public class Project {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Getter
+    @Setter
     @NotBlank(message = "Project's description must not be empty")
     private String description;
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectStep> groups ;
+
+    @Getter
+    @Setter
     @OneToMany( cascade = CascadeType.ALL,mappedBy = "project")
     private Set<ProjectStep> steps;
-
-
 
     public Project() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-     void setDescription(String description) {
-        this.description = description;
-    }
-
-     Set<ProjectStep> getGroups() {
-        return groups;
-    }
-
-     void setGroups(Set<ProjectStep> groups) {
-        this.groups = groups;
-    }
-
-    public Set<ProjectStep> getSteps() {
-        return steps;
-    }
-
-     void setSteps(Set<ProjectStep> steps) {
-        this.steps = steps;
-    }
 }

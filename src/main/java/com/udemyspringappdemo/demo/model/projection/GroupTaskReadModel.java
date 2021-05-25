@@ -1,10 +1,16 @@
 package com.udemyspringappdemo.demo.model.projection;
 
 import com.udemyspringappdemo.demo.model.Task;
+import lombok.Getter;
+import lombok.Setter;
 
 public class GroupTaskReadModel {
 
+    @Getter
+    @Setter
     private boolean done;
+    @Getter
+    @Setter
     private String description;
 
     public GroupTaskReadModel(Task source) {
@@ -12,19 +18,4 @@ public class GroupTaskReadModel {
         done = source.isDone();
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

@@ -1,5 +1,6 @@
 package com.udemyspringappdemo.demo.model;
 
+import lombok.Setter;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
@@ -17,8 +18,8 @@ public class Task  {
     private String description;
     private boolean done;
     @Column(name = "deadline")
+    @Setter
     private LocalDateTime deadline;
-
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
@@ -29,9 +30,17 @@ public class Task  {
     }
 
     public Task(String description, LocalDateTime deadline) {
+        this(description,deadline,null);
+    }
+
+    public Task(String description, LocalDateTime deadline,TaskGroup group) {
         this.description = description;
         this.deadline = deadline;
+        if(group!=null) {
+            this.group=group;
+        }
     }
+
 
     public String getDescription() {
         return description;
