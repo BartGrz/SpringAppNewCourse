@@ -22,10 +22,11 @@ class ProjectServiceTest {
 
         //given
         var mockGroupRepository = groupRepositoryReturning(true);
+        var mockTaskGroupService = mock(TaskGroupService.class);
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(false);
         //system under test
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, mockTaskGroupService);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         //then
@@ -41,11 +42,12 @@ class ProjectServiceTest {
 
         //given
         var mockRepository = mock(ProjectRepository.class);
+        var mockTaskGroupService = mock(TaskGroupService.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, mockTaskGroupService);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         //then
@@ -61,6 +63,7 @@ class ProjectServiceTest {
     void createGroup_noMultipleGroupsConfig_And_undoneGroupsExists_noProjects_throwsIllegalArgumentException() {
 
         //given
+        var mockTaskGroupService = mock(TaskGroupService.class);
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
         //and
@@ -68,7 +71,7 @@ class ProjectServiceTest {
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, taskGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, taskGroupRepository, mockConfig, mockTaskGroupService);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         //then
@@ -84,32 +87,34 @@ class ProjectServiceTest {
     void createGroup_configurationOk_existingProject_createsAndSavesGroup() {
         //given
         var today = LocalDate.now().atStartOfDay();
-        var project = projectWith("bar",Set.of(-1,-2));
+        var project = projectWith("bar", Set.of(-1, -2));
         var mockRepository = mock(ProjectRepository.class);
 
         when(mockRepository
                 .findById(anyInt()))
                 .thenReturn(Optional.of(project));
         //and
+        TaskGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //and
-        TaskGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
+
+        var serviceWithInMemRepo = new TaskGroupService(inMemoryGroupRepo, null);
         int countBeforeCall = inMemoryGroupRepository().count();
         //system under test
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig, serviceWithInMemRepo);
 
         //when
         GroupReadModel result = toTest.createGroup(1, today);
         //then
         assertThat(result.getDescription()).isEqualTo("bar");
         assertThat(result.getDeadline()).isEqualTo(today.minusDays(1));
-        assertThat(result.getTasks()).allMatch(task -> task.getDescription().equals("bar"));
+        assertThat(result.getTasks().stream().allMatch(source -> source.getDescription().equals("foo")));
         assertThat(countBeforeCall).isEqualTo(inMemoryGroupRepository().count());
 
     }
 
 
-        private Project projectWith(String projectDesc, Set<Integer> daysToDeadline ) {
+    private Project projectWith(String projectDesc, Set<Integer> daysToDeadline) {
 
         Set<ProjectStep> steps = daysToDeadline.stream()
                 .map(days -> {
@@ -123,24 +128,27 @@ class ProjectServiceTest {
         when(result.getDescription()).thenReturn(projectDesc);
         when(result.getSteps()).thenReturn(steps);
         return result;
-        }
-        private TaskGroupRepository groupRepositoryReturning ( boolean result){
-            var mockGroupRepository = mock(TaskGroupRepository.class);
-            when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
-            return mockGroupRepository;
-        }
-        private TaskConfigurationProperties configurationReturning ( boolean result){
-            var mockTemplate = mock(TaskConfigurationProperties.Template.class);
-            when(mockTemplate.isAllowMultipleTasks()).thenReturn(result);
-            var mockConfig = mock(TaskConfigurationProperties.class);
-            when(mockConfig.getTemplate()).thenReturn(mockTemplate);
-            return mockConfig;
-        }
-        private InMemoryGroupRepository inMemoryGroupRepository () {
-            return new InMemoryGroupRepository();
-        }
+    }
 
-    public static class InMemoryGroupRepository implements  TaskGroupRepository{
+    private TaskGroupRepository groupRepositoryReturning(boolean result) {
+        var mockGroupRepository = mock(TaskGroupRepository.class);
+        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
+        return mockGroupRepository;
+    }
+
+    private TaskConfigurationProperties configurationReturning(boolean result) {
+        var mockTemplate = mock(TaskConfigurationProperties.Template.class);
+        when(mockTemplate.isAllowMultipleTasks()).thenReturn(result);
+        var mockConfig = mock(TaskConfigurationProperties.class);
+        when(mockConfig.getTemplate()).thenReturn(mockTemplate);
+        return mockConfig;
+    }
+
+    private InMemoryGroupRepository inMemoryGroupRepository() {
+        return new InMemoryGroupRepository();
+    }
+
+    public static class InMemoryGroupRepository implements TaskGroupRepository {
 
         public int count() {
             return map.values().size();
@@ -162,8 +170,8 @@ class ProjectServiceTest {
         @Override
         public boolean existsByDoneIsFalseAndProject_Id(Integer projectId) {
             return map.values().stream()
-                    .filter(group ->!group.isDone())
-                    .anyMatch(group->group.getProject() !=null && group.getProject().getId()==projectId);
+                    .filter(group -> !group.isDone())
+                    .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
         }
 
         @Override
@@ -171,9 +179,9 @@ class ProjectServiceTest {
 
             if (entity.getId() == 0) {
                 try {
-                    var field =  TaskGroup.class.getDeclaredField("id");
+                    var field = TaskGroup.class.getDeclaredField("id");
                     field.setAccessible(true);
-                    field.set(entity,++index);
+                    field.set(entity, ++index);
 
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                     throw new RuntimeException();
