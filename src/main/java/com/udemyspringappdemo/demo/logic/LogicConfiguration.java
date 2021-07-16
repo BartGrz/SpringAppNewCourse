@@ -15,10 +15,10 @@ public class LogicConfiguration {
     public ProjectService projectService(
             ProjectRepository repository,
             TaskGroupRepository taskGroupRepository,
-            TaskConfigurationProperties config
+            TaskConfigurationProperties config,TaskGroupService taskGroupService
     ) {
 
-        return new ProjectService(repository,taskGroupRepository,config);
+        return new ProjectService(repository,taskGroupRepository,config, taskGroupService);
     }
 
     @Bean

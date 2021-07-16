@@ -70,6 +70,16 @@ public class TestConfiguration {
           public Task save(Task entity) {
               return tasks.put(tasks.size()+1, entity);
           }
+
+          @Override
+          public List<Task> findByDone(boolean state) {
+              return null;
+          }
+
+          @Override
+          public List<Task> findAllByGroup_Id(Integer groupId) {
+              return List.of();
+          }
       };
     }
 
