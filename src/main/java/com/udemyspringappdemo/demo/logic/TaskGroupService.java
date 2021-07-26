@@ -1,5 +1,6 @@
 package com.udemyspringappdemo.demo.logic;
 
+import com.udemyspringappdemo.demo.model.Project;
 import com.udemyspringappdemo.demo.model.TaskGroup;
 import com.udemyspringappdemo.demo.model.TaskGroupRepository;
 import com.udemyspringappdemo.demo.model.TaskRepository;
@@ -23,9 +24,13 @@ public class TaskGroupService {
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toGroup());
+    public GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
+    }
+    public GroupReadModel createGroup(GroupWriteModel source) {
+
+    return createGroup(source,null);
     }
     public List<GroupReadModel> readAll() {
         return repository.findAll()
@@ -42,5 +47,6 @@ public class TaskGroupService {
        result.setDone(!result.isDone());
        repository.save(result);
     }
+
 
 }

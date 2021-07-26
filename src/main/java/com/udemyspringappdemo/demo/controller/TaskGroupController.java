@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -35,7 +35,6 @@ public class TaskGroupController {
     @GetMapping
     ResponseEntity<List<GroupReadModel>> readAllGroups(Pageable pageable) {
 
-        logger.info("custom pageable");
         return ResponseEntity.ok(taskGroupService.readAll());
 
     }
@@ -49,15 +48,34 @@ public class TaskGroupController {
     @PostMapping
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate) {
 
-        return ResponseEntity.created(URI.create("/")).body(taskGroupService.createGroup(toCreate));
+        GroupReadModel result = taskGroupService.createGroup(toCreate);
+        return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
     }
 
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<?> toogleGroup(@PathVariable int id) {
-
-        taskGroupService.toogleGroup(id);
+            taskGroupService.toogleGroup(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Exception handler will take care of exception if it was thrown
+     * @param e
+     * @return 404 status , because id was not found
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+    /**
+     * Exception handler will take care of exception if it was thrown
+     * @param e
+     * @return 500 status - if group has undone tasks
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }

@@ -1,5 +1,8 @@
 package com.udemyspringappdemo.demo.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -18,6 +21,8 @@ public class ProjectStep {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @Getter
+    @Setter
     private Project project;
 
 
@@ -50,11 +55,5 @@ public class ProjectStep {
         this.days_to_deadline = days_to_deadLine;
     }
 
-     public Project getProject() {
-        return project;
-    }
 
-     void setProject(Project project) {
-        this.project = project;
-    }
 }

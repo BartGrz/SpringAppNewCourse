@@ -1,6 +1,7 @@
 package com.udemyspringappdemo.demo.model.projection;
 
 
+import com.udemyspringappdemo.demo.model.Project;
 import com.udemyspringappdemo.demo.model.TaskGroup;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +18,13 @@ public class GroupWriteModel {
     @Setter
     private Set<GroupTaskWriteModel> tasks;
 
-    public TaskGroup toGroup() {
+    public TaskGroup toGroup(Project project) {
         var result = new TaskGroup();
         result.setDescription(description);
         result.setTasks(tasks.stream()
                 .map(source -> source.toTask(result))
                 .collect(Collectors.toSet()));
+        result.setProject(project);
         return result;
     }
 }

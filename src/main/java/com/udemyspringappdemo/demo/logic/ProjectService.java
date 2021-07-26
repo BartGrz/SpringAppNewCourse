@@ -58,7 +58,7 @@ public class ProjectService {
                             })
                             .collect(Collectors.toSet()));
 
-                    return service.createGroup(targetGroup);
+                    return service.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
     }
 }
