@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,9 @@ public interface TaskRepository {
     List<Task> findByDone(@Param("state") boolean state);
 
     List<Task> findAllByGroup_Id(Integer groupId);
+
+    @Query("select t from Task t where t.done=false and t.deadline < :dateTime or t.done= false and t.deadline is null")
+    List<Task> findAllByDeadline(@Param("dateTime") LocalDateTime dateTime);
 
     //  List<Task> findByDone(@Param("state") boolean done); //ustawienie zapytania o kolumne done, ustawienie parametru za pomoca ktoreego ustala sie zapytanie
     // np localhost:8080/tasks/search/done?state=false

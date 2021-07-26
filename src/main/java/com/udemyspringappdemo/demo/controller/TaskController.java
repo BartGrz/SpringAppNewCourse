@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,6 +59,15 @@ public class TaskController {
 
         return repository.findById(id).map(task -> ResponseEntity.ok(task))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("search/undone/till-today")
+    ResponseEntity<List<Task>> readAllUndoneForTodayTasks() {
+        var result = repository.findAllByDeadline(LocalDateTime.now());
+        if(result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
 
