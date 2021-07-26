@@ -11,12 +11,12 @@ import java.util.List;
 
 
 @Repository
-    interface SqlTaskRepository extends TaskRepository,JpaRepository<Task,Integer>  {
+interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
 
-        @Override
-        @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
-        boolean existsById(@Param("id") Integer id);
+    @Override
+    @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
+    boolean existsById(@Param("id") Integer id);
 
     @Override
     List<Task> findAllByGroup_Id(Integer groupId);
@@ -42,7 +42,7 @@ import java.util.List;
 
 
      */
-   //   @RestResource(path = "done", rel = "done")  ustawianie sciezki i odnosnika
+//   @RestResource(path = "done", rel = "done")  ustawianie sciezki i odnosnika
 
 
 
