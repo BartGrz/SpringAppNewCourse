@@ -1,6 +1,9 @@
 package com.udemyspringappdemo.demo.logic;
 
-import com.udemyspringappdemo.demo.model.*;
+import com.udemyspringappdemo.demo.model.Project;
+import com.udemyspringappdemo.demo.model.ProjectRepository;
+import com.udemyspringappdemo.demo.model.TaskConfigurationProperties;
+import com.udemyspringappdemo.demo.model.TaskGroupRepository;
 import com.udemyspringappdemo.demo.model.projection.GroupReadModel;
 import com.udemyspringappdemo.demo.model.projection.GroupTaskWriteModel;
 import com.udemyspringappdemo.demo.model.projection.GroupWriteModel;

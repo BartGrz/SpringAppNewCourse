@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,7 +19,11 @@ public class ProjectWriteModel {
     @Valid
     @Getter
     @Setter
-    private List<ProjectStep> steps ;
+    private List<ProjectStep> steps = new ArrayList<>();
+
+    public ProjectWriteModel() {
+        steps.add(new ProjectStep());
+    }
 
     public Project toProject() {
         var result = new Project();
