@@ -16,6 +16,9 @@ public class GroupTaskWriteModel {
     @Getter
     @Setter
     private LocalDateTime deadline;
+    @Getter
+    @Setter
+    private boolean done;
 
     public Task toTask(TaskGroup group) {
         return new Task(description,deadline,group);

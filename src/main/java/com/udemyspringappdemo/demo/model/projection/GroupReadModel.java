@@ -5,6 +5,7 @@ import com.udemyspringappdemo.demo.model.Task;
 import com.udemyspringappdemo.demo.model.TaskGroup;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ public class GroupReadModel {
         source.getTasks()
                 .stream()
                 .map(Task::getDeadline)
+                .filter(Objects::nonNull )
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date->deadline=date);
         tasks = source.getTasks().stream().map(GroupTaskReadModel::new)

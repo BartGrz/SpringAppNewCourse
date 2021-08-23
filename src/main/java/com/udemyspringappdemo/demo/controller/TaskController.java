@@ -61,7 +61,7 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("search/undone/till-today")
+    @GetMapping("/undone/till-today")
     ResponseEntity<List<Task>> readAllUndoneForTodayTasks() {
         var result = repository.findAllByDeadline(LocalDateTime.now());
         if(result.isEmpty()) {
