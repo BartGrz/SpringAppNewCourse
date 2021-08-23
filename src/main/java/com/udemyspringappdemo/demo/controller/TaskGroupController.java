@@ -6,7 +6,6 @@ import com.udemyspringappdemo.demo.model.TaskRepository;
 import com.udemyspringappdemo.demo.model.projection.GroupReadModel;
 import com.udemyspringappdemo.demo.model.projection.GroupTaskWriteModel;
 import com.udemyspringappdemo.demo.model.projection.GroupWriteModel;
-import com.udemyspringappdemo.demo.model.projection.ProjectWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -82,7 +81,7 @@ public class TaskGroupController {
             return "groups" ;
         }
         taskGroupService.createGroup(current); 
-        model.addAttribute("group", new ProjectWriteModel());
+        model.addAttribute("group", new GroupWriteModel());
         model.addAttribute("groups", getGroups());
         model.addAttribute("message", "group added");
         return "groups" ;
