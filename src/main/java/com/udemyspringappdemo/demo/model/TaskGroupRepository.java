@@ -16,4 +16,5 @@ public interface TaskGroupRepository {
 
     List<Project> findAllByDoneIsFalse();
 
+    boolean existByDescription(String description);
 }

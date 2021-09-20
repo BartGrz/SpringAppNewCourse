@@ -1,5 +1,6 @@
 package com.udemyspringappdemo.demo.model;
 
+import com.udemyspringappdemo.demo.model.event.TaskEvent;
 import lombok.Setter;
 import org.hibernate.annotations.ManyToAny;
 
@@ -54,10 +55,10 @@ public class Task  {
         return done;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public TaskEvent toggle() {
+        this.done = !this.done;
+        return TaskEvent.changed(this);
     }
-
     public int getId() {
         return id;
     }
