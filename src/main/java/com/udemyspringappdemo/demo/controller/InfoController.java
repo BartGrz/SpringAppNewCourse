@@ -22,7 +22,7 @@ public class InfoController {
     String url() {
         return dataSource.getUrl();
     }
-    @GetMapping("/myProp")
+    @GetMapping("/my-prop")
     boolean myProp() {
         return myProp.getTemplate().isAllowMultipleTasks();
     }

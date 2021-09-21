@@ -31,7 +31,7 @@ public class GroupWriteModel {
         tasks.add(new GroupTaskWriteModel());
     }
 
-    public TaskGroup toGroup(Project project) {
+    public TaskGroup toGroup(Project project ) {
         var result = new TaskGroup();
         result.setDescription(description);
         result.setTasks(tasks.stream()

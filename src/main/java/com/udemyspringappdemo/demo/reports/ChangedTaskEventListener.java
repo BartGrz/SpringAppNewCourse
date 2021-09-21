@@ -6,6 +6,7 @@ import com.udemyspringappdemo.demo.model.event.TaskUndone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -19,11 +20,17 @@ public class ChangedTaskEventListener {
     public ChangedTaskEventListener(PersistedTaskEventRepository repository) {
         this.repository = repository;
     }
-
+    @Async
     @EventListener
     public void on(TaskDone event) {
         onChanged(event);
     }
+
+    /***
+     * When task data is changed, system will publish this "event"
+     * @param event
+     */
+    @Async
     @EventListener
     public void on(TaskUndone event) {
         onChanged(event);

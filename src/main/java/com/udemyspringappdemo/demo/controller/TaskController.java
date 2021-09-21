@@ -5,6 +5,7 @@ import com.udemyspringappdemo.demo.model.Task;
 import com.udemyspringappdemo.demo.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +17,20 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-
 @RestController
 //zmiana adnotacji z @RepositoryRestController na RestController [wystarczyłby @controller] (teraz mamy tylko odczyt tasków)
 @RequestMapping("/tasks")
+@IllegalExceptionProcessing //dodawanie mozliwosci obslugi bledow
 public class TaskController {
 
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private ApplicationEventPublisher eventPublisher ;
     private final TaskRepository repository;
     private final TaskService service;
 
     //mozna tak @Qualifier("sqlTaskRepository"), rozwiazanie konfliktu z duplikatem beanu w testach
-    TaskController(final TaskRepository repository, TaskService service) {
+    TaskController(ApplicationEventPublisher eventPublisher, final TaskRepository repository, TaskService service) {
+        this.eventPublisher = eventPublisher;
         this.repository = repository;
         this.service = service;
     }
@@ -112,12 +115,15 @@ public class TaskController {
 
     @Transactional
     @PatchMapping("/{id}")
-    public ResponseEntity<?> toogleTask(@PathVariable int id) {
+    public ResponseEntity<?> toggleTask(@PathVariable int id) {
 
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id).ifPresent(task -> task.setDone(!task.isDone()));
+        //publishing event whenever the task is changed (done, undone)
+        repository.findById(id)
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 

@@ -4,10 +4,11 @@ import com.udemyspringappdemo.demo.model.Task;
 import com.udemyspringappdemo.demo.model.TaskGroup;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-
+@ToString
 public class GroupTaskWriteModel {
 
     @Getter
@@ -20,7 +21,8 @@ public class GroupTaskWriteModel {
     @Setter
     private boolean done;
 
-    public Task toTask(TaskGroup group) {
+
+    public Task toTask(TaskGroup group ) {
         return new Task(description,deadline,group);
 
     }

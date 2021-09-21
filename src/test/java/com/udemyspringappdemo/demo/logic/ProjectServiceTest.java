@@ -192,11 +192,16 @@ class ProjectServiceTest {
             return entity;
         }
 
+
         @Override
         public List<Project> findAllByDoneIsFalse() {
             return null;
         }
-    }
 
+        @Override
+        public boolean existByDescription(String description) {
+            return map.values().stream().anyMatch(group -> group.getDescription().equals(description));
+        }
+    }
 }
 

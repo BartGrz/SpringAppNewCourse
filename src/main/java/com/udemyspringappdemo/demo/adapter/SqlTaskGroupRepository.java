@@ -5,6 +5,7 @@ import com.udemyspringappdemo.demo.model.TaskGroup;
 import com.udemyspringappdemo.demo.model.TaskGroupRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +19,10 @@ public interface SqlTaskGroupRepository extends TaskGroupRepository, JpaReposito
 
     @Query("from TaskGroup g join fetch g.tasks where g.done = false ")
     List<Project> findAllByDoneIsFalse();
+
+    @Override
+    @Query(nativeQuery = true,value = "SELECT count(*) > 0 from TASK_GROUPS where DESCRIPTION= :desc ")
+    boolean existByDescription(@Param("desc") String description);
 
     @Override
     boolean existsByDoneIsFalseAndProject_Id(Integer projectId);

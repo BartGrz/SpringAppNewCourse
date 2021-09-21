@@ -9,6 +9,7 @@ import com.udemyspringappdemo.demo.model.projection.GroupWriteModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -46,20 +48,25 @@ public class TaskGroupController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<GroupReadModel>> readAllGroups(Pageable pageable) {
         return ResponseEntity.ok(taskGroupService.readAll());
-
     }
 
     @ResponseBody
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Task>> readAllTasksFromGroup(@PathVariable int id) {
-        return ResponseEntity.ok(repository.findAllByGroup_Id(id));
+        var group = repository.findAllByGroup_Id(id);
+        if(group.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(group);
     }
 
     @ResponseBody
     @PostMapping(produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate) {
+    ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate
 
+    ) {
         GroupReadModel result = taskGroupService.createGroup(toCreate);
+        logger.warn(""+result.getDeadline());
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
@@ -75,21 +82,27 @@ public class TaskGroupController {
     String addGroup(
             @ModelAttribute("group") @Valid GroupWriteModel current,
             BindingResult bindingResult,
-            Model model
-    ) {
+            Model model,
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline
+
+){
         if (bindingResult.hasErrors()) {
-            return "groups" ;
+            return "groups";
         }
-        taskGroupService.createGroup(current); 
+        current.setDeadline(deadline);
+        logger.warn(current.toString());
+        var val =  taskGroupService.createGroup(current);
+      logger.warn(val.toString());
         model.addAttribute("group", new GroupWriteModel());
         model.addAttribute("groups", getGroups());
         model.addAttribute("message", "group added");
-        return "groups" ;
+        return "groups";
+
     }
 
     @ModelAttribute("groups")
     public List<GroupReadModel> getGroups() {
-       return taskGroupService.readAll();
+        return taskGroupService.readAll();
     }
 
     @PostMapping(params = "addStep", produces = MediaType.TEXT_HTML_VALUE)
@@ -97,29 +110,6 @@ public class TaskGroupController {
         current.getTasks().add(new GroupTaskWriteModel());
         return "groups";
 
-    }
-
-
-    /**
-     * Exception handler will take care of exception if it was thrown
-     *
-     * @param e
-     * @return 404 status , because id was not found
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
-
-    /**
-     * Exception handler will take care of exception if it was thrown
-     *
-     * @param e
-     * @return 500 status - if group has undone tasks
-     */
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }

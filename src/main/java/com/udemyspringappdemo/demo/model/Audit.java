@@ -1,7 +1,6 @@
 package com.udemyspringappdemo.demo.model;
 
 import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
@@ -20,5 +19,4 @@ import java.time.LocalDateTime;
     private void preMerge () {
         updatedOn = LocalDateTime.now();
     }
-
 }

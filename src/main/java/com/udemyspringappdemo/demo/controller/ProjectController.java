@@ -4,6 +4,7 @@ import com.udemyspringappdemo.demo.logic.ProjectService;
 import com.udemyspringappdemo.demo.model.Project;
 import com.udemyspringappdemo.demo.model.ProjectStep;
 import com.udemyspringappdemo.demo.model.projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +50,7 @@ private final ProjectService projectService;
         return "projects";
 
     }
+    @Timed(value = "project.create.group",histogram = true,percentiles = {0.5,0.95,0.99})
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project")ProjectWriteModel current,

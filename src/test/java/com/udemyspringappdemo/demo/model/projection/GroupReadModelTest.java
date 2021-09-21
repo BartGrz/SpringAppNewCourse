@@ -11,7 +11,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class GroupReadModelTest {
 
-    @Test
+     @Test
     @DisplayName("Should create null deadlines for group when no task deadline")
     void constructor_noDeadline_createsNullDeadline() {
         //given

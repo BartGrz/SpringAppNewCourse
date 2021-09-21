@@ -18,6 +18,11 @@ public class PersistedTaskEvent {
 
     public PersistedTaskEvent() {
     }
+
+    /**
+     * saving to database if changed of Task object occurred, with occurrence time
+     * @param source (instance of TaskEvent class)
+     */
     public PersistedTaskEvent(TaskEvent source) {
         task_id = source.getTask_id();
         name = source.getClass().getSimpleName();

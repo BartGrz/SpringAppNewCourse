@@ -67,8 +67,8 @@
                            th:errorclass="'Bdc(red)'"/>
                 </label>
                 <label>dni do konca projektu
-                    <input type="number" th:field="*{tasks[__${taskStat.index}__].deadline}"
-                           th:errorclass="'Bdc(red)'"/>
+                    <input type="datetime-local" name="date"
+                          />
                 </label>
                 <div>
                     <button type="submit" name="addStep">+</button>

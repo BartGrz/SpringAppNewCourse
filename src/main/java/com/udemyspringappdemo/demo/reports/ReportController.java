@@ -31,10 +31,15 @@ public class ReportController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * inner class, description and done fields are the same as int the Task entity,
+     * the one additional filed will represent how many times Task object has been changed
+     */
     private class TaskWithChangesCount {
         public String description;
         public boolean done;
         public int changesCount;
+
         private TaskWithChangesCount(Task task, List<PersistedTaskEvent> events) {
             description=task.getDescription();
             done=task.isDone();

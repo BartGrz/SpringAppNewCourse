@@ -19,13 +19,8 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer>
     boolean existsById(@Param("id") Integer id);
 
     @Override
-    List<Task> findAllByGroup_Id(Integer groupId);
+    List<Task> findAllByGroup_Id(Integer id);
 }
-
-
-
-
-
     /*
 
   zmiana adnotacji z RepositoryRestResource na repository metody niżej i tak będą nam dostępne (repository dokleja @component w doc)

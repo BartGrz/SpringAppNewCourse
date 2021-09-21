@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 public class GroupTaskReadModel {
 
 
+    @Getter
+    @Setter
     private boolean done;
     @Getter
     @Setter
@@ -23,7 +25,4 @@ public class GroupTaskReadModel {
         deadline=source.getDeadline();
     }
 
-    public boolean isDone() {
-        return done;
-    }
 }

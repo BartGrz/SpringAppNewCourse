@@ -28,7 +28,8 @@ public interface TaskRepository {
     @Query("select t from Task t where t.done =:state")
     List<Task> findByDone(@Param("state") boolean state);
 
-    List<Task> findAllByGroup_Id(Integer groupId);
+    @Query(nativeQuery = true , value = "Select *from TASKS t join TASK_GROUPS TG on TG.ID = t.TASK_GROUP_ID where t.TASK_GROUP_ID=:id")
+    List<Task> findAllByGroup_Id(@Param("id") Integer id);
 
     @Query("select t from Task t where t.done=false and t.deadline < :dateTime or t.done= false and t.deadline is null")
     List<Task> findAllByDeadline(@Param("dateTime") LocalDateTime dateTime);
