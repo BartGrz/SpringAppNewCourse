@@ -1,7 +1,6 @@
 # Application example from course.
 
-## Course is focused on servlet aspect of spirng framework. Application is not finished yet.
-
+## Course is focused on servlet aspect of spirng framework.
   ### Language : 
    * #### Java 11
   ### Frameworks :
